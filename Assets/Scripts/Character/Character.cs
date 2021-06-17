@@ -15,19 +15,18 @@ public class Character : MonoBehaviour
         m_controller = gameObject.AddComponent<CharacterController>();
         m_lifes = 3;
         m_numBombs = 1;
-        //m_position;
     }
 
     // Update is called once per frame
     void Update() {
-        //movimiento del personaje
+        //movement of the character
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"),  
                                    0,
                                    Input.GetAxis("Vertical"));
 
         m_controller.Move(move * Time.deltaTime * m_speed);
 
-        //inputs para plantar bomba
+        //inputs to character mecanics
         inputEvent();
     }
 
