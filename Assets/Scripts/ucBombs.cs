@@ -9,8 +9,8 @@ class ucBombs : MonoBehaviour {
   float m_actualTime; 
   int m_range = 1; //Range in tiles
   int m_tileSize;
-  GameObject m_thisBomb;
-  bool m_isActive = false;
+  public GameObject m_thisBomb;
+  public bool m_isActive = false;
 
 
   // Start is called before the first frame update
@@ -33,7 +33,7 @@ class ucBombs : MonoBehaviour {
     }
   }
 
-  void
+  public void
   Spawn() {
     m_thisBomb.SetActive(true);
   }
@@ -42,6 +42,7 @@ class ucBombs : MonoBehaviour {
   void
   Explode() {
     m_actualTime = m_timer;
+    m_thisBomb.SetActive(false);
     //Generate the explotion and detect the player
   }
 }
