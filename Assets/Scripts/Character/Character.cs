@@ -12,9 +12,32 @@ public class Character : MonoBehaviour {
 
   public List<GameObject> bombs = new List<GameObject>();
   public GameObject bombsPrefab;
+    
+  public enum ANIMATIONAXIS {
+    kRows,
+    kColum
+  }
 
-  // Start is called before the first frame update
-  void 
+  [SerializeField]
+  private MeshRenderer m_meshRender;
+  
+  [SerializeField]
+  private string m_rowProperty = "_ActualRow";
+
+  [SerializeField]
+  private string m_colProperty = "_ActualCol";
+
+  [SerializeField]
+  private ANIMATIONAXIS m_axis;
+
+  [SerializeField]
+  private float m_animationSpeed;
+
+  [SerializeField]
+  private int m_animationIndex;
+
+    // Start is called before the first frame update
+    void 
   Start() {
 
     m_controller = gameObject.AddComponent<CharacterController>();
@@ -31,6 +54,21 @@ public class Character : MonoBehaviour {
                                Input.GetAxis("Vertical"));
 
     m_controller.Move(move * Time.deltaTime * m_speed);
+
+    string clipKey, frameKey;
+    if(m_axis == ANIMATIONAXIS.kRows) {
+      clipKey = m_rowProperty;
+      frameKey = m_colProperty;
+    }
+    else {
+      clipKey = m_colProperty;
+      frameKey = m_rowProperty;
+    }
+
+    int frame = (int)(Time.time * m_animationSpeed);
+
+    m_meshRender.material.SetFloat(clipKey,m_animationIndex);
+    m_meshRender.material.SetFloat(frameKey, frame);
 
     //inputs to character mecanics
     inputEvent();
