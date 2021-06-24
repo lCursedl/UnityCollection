@@ -476,6 +476,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_speed: 2
+  bombs: []
+  bombsPrefab: {fileID: 2777019484686354190, guid: 48098a3d700767b4ea6dc0928566c039, type: 3}
 --- !u!4 &1916158119
 Transform:
   m_ObjectHideFlags: 0
