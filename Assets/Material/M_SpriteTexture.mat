@@ -37,7 +37,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _ActualCol: 0
-    - _ActualRow: 0
+    - _ActualRow: 3
     m_Colors:
     - _Grid: {r: 6, g: 4, b: 0, a: 0}
   m_BuildTextureStacks: []
