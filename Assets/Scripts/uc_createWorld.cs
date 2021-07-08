@@ -7,7 +7,8 @@ public class uc_createWorld : MonoBehaviour
     public uint m_rows = 2;
     public uint m_columns = 2;
 
-    public GameObject m_referenceSprite;
+    public GameObject m_floorSprite;
+    public GameObject m_limitMapSprite;
 
     private GameObject[] m_savedTiles;
     private float m_tileSizeX = 0;
@@ -25,13 +26,19 @@ public class uc_createWorld : MonoBehaviour
     private void generateWorld()
     {
         m_savedTiles = new GameObject[m_rows * m_columns];
+
+        bool oneTime = false;
+
         uint tempRowsCols = 0;
 
         for (uint i = 0; i < m_rows; ++i)
         {
+            oneTime = false;
+
             for (uint j = 0; j < m_columns; ++j)
             {
-                GameObject tile = (GameObject)Instantiate(m_referenceSprite, transform);
+                //Zona para dibujar el mapa completo
+                GameObject tile = (GameObject)Instantiate(m_floorSprite, transform);
 
                 float posX = j * m_tileSizeX;
                 float posZ = i * m_tileSizeY;
@@ -40,7 +47,77 @@ public class uc_createWorld : MonoBehaviour
 
                 m_savedTiles[tempRowsCols] = tile;
                 ++tempRowsCols;
+
+                //Zona para dibujar obstáculos a la derecha
+                if (!oneTime)
+                {
+                    generateObstacle(posZ);
+                    oneTime = true;
+                }
             }
+        }
+
+        //Zona para los obstáculos de arriba
+        generateObstacle2();
+
+        //Zona para los obstáculos de la izquierda
+        generateObstacle3();
+
+        //Zona para los obstáculos de abajo
+        generateObstacle4();
+    }
+
+    private void generateObstacle(float posZ)
+    {
+        //Lado positivo
+        GameObject limitMap = (GameObject)Instantiate(m_limitMapSprite, transform);
+        float posX_LM = m_rows * m_tileSizeX;
+
+        limitMap.transform.position = new Vector3(posX_LM, 0.0f, posZ);
+    }
+
+    private void generateObstacle2()
+    {
+        for (uint i = 0; i <= m_columns; ++i)
+        {
+            GameObject limitMap = (GameObject)Instantiate(m_limitMapSprite, transform);
+
+            float posX = i * m_tileSizeX;
+            float posZ = m_rows * m_tileSizeY;
+
+            limitMap.transform.position = new Vector3(posX, 0.0f, posZ);
+        }
+    }
+
+    private void generateObstacle3()
+    {
+        for (uint i = 0; i <= m_rows; ++i)
+        {
+            GameObject limitMap = (GameObject)Instantiate(m_limitMapSprite, transform);
+            float posX_LM = -1 * m_tileSizeX;
+            float posZ = i * m_tileSizeY;
+
+            limitMap.transform.position = new Vector3(posX_LM, 0.0f, posZ);
+        }
+
+        GameObject oneLimit = (GameObject)Instantiate(m_limitMapSprite, transform);
+
+        float posX = -1 * m_tileSizeX;
+        float posZ_LM = -1 * m_tileSizeY;
+
+        oneLimit.transform.position = new Vector3(posX, 0.0f, posZ_LM);
+    }
+
+    private void generateObstacle4()
+    {
+        for (uint i = 0; i <= m_columns; ++i)
+        {
+            GameObject limitMap = (GameObject)Instantiate(m_limitMapSprite, transform);
+
+            float posX = i * m_tileSizeX;
+            float posZ = -1 * m_tileSizeY;
+
+            limitMap.transform.position = new Vector3(posX, 0.0f, posZ);
         }
     }
 
@@ -60,7 +137,7 @@ public class uc_createWorld : MonoBehaviour
 
     private void obtainBounds()
     {
-        BoxCollider tempSprite = m_referenceSprite.GetComponent<BoxCollider>();
+        BoxCollider tempSprite = m_floorSprite.GetComponent<BoxCollider>();
 
         //Sabemos cuando mide un tile
         m_tileSizeX = tempSprite.size.x;
