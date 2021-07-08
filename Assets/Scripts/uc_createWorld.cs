@@ -66,4 +66,8 @@ public class uc_createWorld : MonoBehaviour
         m_tileSizeX = tempSprite.size.x;
         m_tileSizeY = tempSprite.size.y;
     }
+
+    private void OnCollisionEnter(Collision collision) {
+        
+    }
 }

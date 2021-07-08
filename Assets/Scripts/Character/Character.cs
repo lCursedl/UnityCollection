@@ -89,4 +89,13 @@ public class Character : MonoBehaviour {
       }
     }
   }
+
+  private void OnCollisionEnter(Collision collision) {
+
+    if (collision.gameObject.name == "Enemy") {
+      m_lifes-=1;
+    }
+    Debug.Log(m_lifes);
+  }
+
 }
