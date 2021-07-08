@@ -4,49 +4,48 @@ using UnityEngine;
 
 public class ucEnemyBase : MonoBehaviour
 {
-    private enum DIRECTIONS
-    {
+    protected enum DIRECTIONS {
         kNORTH = 0,
         kSOUTH,
         kEAST,
         kWEST
     }
     [SerializeField]
-    float m_speed;
-    int m_scoreValue;
-    bool m_canCollide;
-    bool m_chasePlayer;
-    uc_createWorld m_map;
-    Vector2Int m_mapPos;
-    Vector3 m_directionVec;
-    DIRECTIONS m_direction;
+    protected float m_speed;
+    [SerializeField]
+    protected int m_scoreValue;
+
+    protected bool m_canCollide;
+    protected bool m_chasePlayer;
+    protected uc_createWorld m_map;
+    protected Vector2Int m_mapPos;
+    protected Vector3 m_directionVec;
+    protected DIRECTIONS m_direction;
+    protected bool m_alive;
+    protected float m_directionTime;
+    protected float m_actualDirTime;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         GameObject map = GameObject.Find("World Origin");
         m_map = map.GetComponent<uc_createWorld>();
-        m_mapPos = m_map.obtainWorldPosition(transform.position);
         SetDirection();
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         transform.position += m_directionVec * m_speed * Time.deltaTime;
+        m_mapPos = m_map.obtainWorldPosition(transform.position);
     }
 
-    void SetDirection()
-    {
+    void SetDirection() {
         DIRECTIONS dir;
-        do
-        {
+        do {
             dir = (DIRECTIONS)Random.Range(0, 4);
         }
         while (m_direction == dir);
         m_direction = dir;
-        switch (m_direction)
-        {
+        switch (m_direction) {
             case DIRECTIONS.kNORTH:
                 m_directionVec = new Vector3(0.0f, 0.0f, 1.0f);
                 break;
