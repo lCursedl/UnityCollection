@@ -8,12 +8,17 @@ public class ucEnemyBase : MonoBehaviour
         kNORTH = 0,
         kSOUTH,
         kEAST,
-        kWEST
+        kWEST,
+        kNULL
     }
     [SerializeField]
     protected float m_speed;
     [SerializeField]
     protected int m_scoreValue;
+    [SerializeField]
+    protected int m_minChangeTime;
+    [SerializeField]
+    protected int m_maxChangeTime;
 
     protected bool m_canCollide;
     protected bool m_chasePlayer;
@@ -29,16 +34,17 @@ public class ucEnemyBase : MonoBehaviour
     void Start() {
         GameObject map = GameObject.Find("World Origin");
         m_map = map.GetComponent<uc_createWorld>();
-        SetDirection();
+        m_direction = DIRECTIONS.kNULL;
+        SetRandomDirection();
     }
 
     // Update is called once per frame
     void Update() {
         transform.position += m_directionVec * m_speed * Time.deltaTime;
-        m_mapPos = m_map.obtainWorldPosition(transform.position);
+        m_actualDirTime += Time.deltaTime;
     }
 
-    void SetDirection() {
+    void SetRandomDirection() {
         DIRECTIONS dir;
         do {
             dir = (DIRECTIONS)Random.Range(0, 4);
@@ -62,6 +68,19 @@ public class ucEnemyBase : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision) {
-        SetDirection();
+        SetRandomDirection();
+        ContactPoint point = collision.GetContact(0);
+        Vector3 tempNormal = point.normal;
+
+        if (tempNormal.x != 0) {
+            transform.position = new Vector3(transform.position.x + tempNormal.x * 0.05f,
+                                             transform.position.y,
+                                             transform.position.z);
+        }
+        else {
+            transform.position = new Vector3(transform.position.x,
+                                             transform.position.y,
+                                             transform.position.z + tempNormal.z * 0.05f);
+        }
     }
 }
