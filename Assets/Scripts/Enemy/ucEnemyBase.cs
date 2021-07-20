@@ -16,9 +16,9 @@ public class ucEnemyBase : MonoBehaviour
     [SerializeField]
     protected int m_scoreValue;
     [SerializeField]
-    protected int m_minChangeTime;
+    protected uint m_minChangeTile;
     [SerializeField]
-    protected int m_maxChangeTime;
+    protected uint m_maxChangeTile;
 
     protected bool m_canCollide;
     protected bool m_chasePlayer;
@@ -27,8 +27,9 @@ public class ucEnemyBase : MonoBehaviour
     protected Vector3 m_directionVec;
     protected DIRECTIONS m_direction;
     protected bool m_alive;
-    protected float m_directionTime;
-    protected float m_actualDirTime;
+    protected Vector2Int m_prevMapPos;
+    protected uint m_changeTile;
+    protected uint m_currChangeTile;
 
     // Start is called before the first frame update
     void Start() {
@@ -36,12 +37,22 @@ public class ucEnemyBase : MonoBehaviour
         m_map = map.GetComponent<uc_createWorld>();
         m_direction = DIRECTIONS.kNULL;
         SetRandomDirection();
+        ResetChangeTile();
+        m_mapPos = m_map.obtainWorldPosition(gameObject.transform.position);
+        m_prevMapPos = m_mapPos;
     }
 
     // Update is called once per frame
     void Update() {
+        m_mapPos = m_map.obtainWorldPosition(gameObject.transform.position);
+        if(m_prevMapPos != m_mapPos) {
+            m_prevMapPos = m_mapPos;
+            ++m_currChangeTile;
+            if (m_currChangeTile >= m_changeTile) {
+                SetRandomDirection();
+            }
+        }
         transform.position += m_directionVec * m_speed * Time.deltaTime;
-        m_actualDirTime += Time.deltaTime;
     }
 
     void SetRandomDirection() {
@@ -82,5 +93,10 @@ public class ucEnemyBase : MonoBehaviour
                                              transform.position.y,
                                              transform.position.z + tempNormal.z * 0.05f);
         }
+    }
+    
+    protected void ResetChangeTile() {
+        m_changeTile = (uint)Random.Range(m_minChangeTile, m_maxChangeTile);
+        m_currChangeTile = 0;
     }
 }
