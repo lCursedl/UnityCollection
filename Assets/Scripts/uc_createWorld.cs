@@ -135,6 +135,18 @@ public class uc_createWorld : MonoBehaviour
         return Vector2Int.RoundToInt(mapCoord);
     }
 
+    public Vector3 obtainTileToWorld(Vector2Int tilePos) {
+
+      if((tilePos.x > 0 && tilePos.x < m_rows)
+         && (tilePos.y > 0 && tilePos.y < m_columns)) {
+
+        return m_savedTiles[(tilePos.y * m_columns) 
+                            + tilePos.x].transform.position;
+      }
+
+      return new Vector3(-1.0f, -1.0f, -1.0f);
+    }
+
     private void obtainBounds()
     {
         BoxCollider tempSprite = m_floorSprite.GetComponent<BoxCollider>();
