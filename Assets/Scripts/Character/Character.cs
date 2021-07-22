@@ -12,6 +12,7 @@ public class Character : MonoBehaviour {
 
   public List<GameObject> bombs = new List<GameObject>();
   public GameObject bombsPrefab;
+  uc_createWorld m_map;
     
   public enum ANIMATIONAXIS {
     kRows,
@@ -39,6 +40,8 @@ public class Character : MonoBehaviour {
     // Start is called before the first frame update
     void 
   Start() {
+    GameObject map = GameObject.Find("World Origin");
+    m_map = map.GetComponent<uc_createWorld>();
 
     m_controller = gameObject.AddComponent<CharacterController>();
     m_lifes = 3;
@@ -81,11 +84,25 @@ public class Character : MonoBehaviour {
     if (Input.GetKeyDown(KeyCode.Space)) {
       if (m_usingBombs < m_numBombs) {
         print("bomba puesta");
-        Vector3 tmpPos = m_controller.gameObject.transform.position;
-        GameObject tmpBomb = Instantiate(bombsPrefab, tmpPos, Quaternion.identity);
-        bombs.Add(tmpBomb);
-        ucBombs tmpBombInfo = tmpBomb.GetComponent(typeof(ucBombs)) as ucBombs;
-        tmpBombInfo.Spawn();
+        //Vector3 tmpPos = m_controller.gameObject.transform.position;
+        //Vector2Int tilePos = m_map.obtainWorldPosition(transform.position);
+        Vector3 realPos = m_map.obtainTileToWorld
+                                (m_map.obtainWorldPosition(transform.position));
+
+        if(realPos.x != -1.0f) {
+
+          GameObject tmpBomb = Instantiate(bombsPrefab, 
+                                          new Vector3(realPos.x, 
+                                                      transform.position.y, 
+                                                      realPos.z), 
+                                          Quaternion.identity);
+          bombs.Add(tmpBomb);
+          ucBombs tmpBombInfo = tmpBomb.GetComponent(typeof(ucBombs)) as ucBombs;
+          tmpBombInfo.Spawn();
+        }
+   
+
+        
       }
     }
   }
