@@ -19,10 +19,13 @@ public class ucEnemyBase : MonoBehaviour
     protected uint m_minChangeTile;
     [SerializeField]
     protected uint m_maxChangeTile;
+    [SerializeField]
+    protected float m_detectionRange;
 
     protected bool m_canCollide;
     protected bool m_chasePlayer;
     protected uc_createWorld m_map;
+    protected GameObject m_player;
     protected Vector2Int m_mapPos;
     protected Vector3 m_directionVec;
     protected DIRECTIONS m_direction;
@@ -35,6 +38,7 @@ public class ucEnemyBase : MonoBehaviour
     void Start() {
         GameObject map = GameObject.Find("World Origin");
         m_map = map.GetComponent<uc_createWorld>();
+        m_player = GameObject.FindGameObjectWithTag("Player");
         m_direction = DIRECTIONS.kNULL;
         SetRandomDirection();
         ResetChangeTile();
@@ -44,15 +48,28 @@ public class ucEnemyBase : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        DetectPlayer();
         m_mapPos = m_map.obtainWorldPosition(gameObject.transform.position);
         if(m_prevMapPos != m_mapPos) {
             m_prevMapPos = m_mapPos;
             ++m_currChangeTile;
             if (m_currChangeTile >= m_changeTile) {
-                SetRandomDirection();
+                SwapDirection();
+                ResetChangeTile();
             }
         }
         transform.position += m_directionVec * m_speed * Time.deltaTime;
+    }
+
+    void DetectPlayer() {
+        RaycastHit hit;
+        Vector3 directionToPlayer = (m_player.transform.position - transform.position).normalized;
+        if(Physics.Raycast(transform.position, directionToPlayer, out hit, m_detectionRange)) {
+             if (hit.collider.gameObject.CompareTag("Player")) {
+                m_chasePlayer = true;
+            }
+        }
+        Debug.DrawRay(transform.position, directionToPlayer, Color.green);
     }
 
     void SetRandomDirection() {
@@ -98,5 +115,26 @@ public class ucEnemyBase : MonoBehaviour
     protected void ResetChangeTile() {
         m_changeTile = (uint)Random.Range(m_minChangeTile, m_maxChangeTile);
         m_currChangeTile = 0;
+    }
+
+    protected void SwapDirection() {
+        switch(m_direction) {
+            case DIRECTIONS.kNORTH:
+                m_directionVec = new Vector3(0.0f, 0.0f, -1.0f);
+                m_direction = DIRECTIONS.kSOUTH;
+                break;
+            case DIRECTIONS.kSOUTH:
+                m_directionVec = new Vector3(0.0f, 0.0f, 1.0f);
+                m_direction = DIRECTIONS.kNORTH;
+                break;
+            case DIRECTIONS.kEAST:
+                m_directionVec = new Vector3(-1.0f, 0.0f, 0.0f);
+                m_direction = DIRECTIONS.kWEST;
+                break;
+            case DIRECTIONS.kWEST:
+                m_directionVec = new Vector3(1.0f, 0.0f, 0.0f);
+                m_direction = DIRECTIONS.kEAST;
+                break;
+        }
     }
 }
