@@ -7,25 +7,27 @@ public class uc_createWorld : MonoBehaviour
     public uint m_rows = 2;
     public uint m_columns = 2;
 
-    public GameObject m_floorSprite;
-    public GameObject m_limitMapSprite;
-
-    private GameObject[] m_savedTiles;
     private float m_tileSizeX = 0;
     private float m_tileSizeY = 0;
 
+    public uc_infoTile m_infoTileObj;
+    public uc_floorTiles m_floorObject;
 
-    // Start is called before the first frame update
+    //TODO: Change
+    public GameObject m_limitMapSprite;
+    
+    //Start is called before the first frame update
     void Start()
     {
-        //Obtención de bounds del modelo a usar
+        //Obtaining bounds of the model to use
         obtainBounds();
         generateWorld();
     }
 
     private void generateWorld()
     {
-        m_savedTiles = new GameObject[m_rows * m_columns];
+        m_floorObject.m_savedTiles = new GameObject[m_rows * m_columns];
+        m_floorObject.m_floorPosition = new Vector3[m_rows * m_columns];
 
         bool oneTime = false;
 
@@ -37,18 +39,21 @@ public class uc_createWorld : MonoBehaviour
 
             for (uint j = 0; j < m_columns; ++j)
             {
-                //Zona para dibujar el mapa completo
-                GameObject tile = (GameObject)Instantiate(m_floorSprite, transform);
-
+                //Area to draw the complete map
+                GameObject tile = (GameObject)Instantiate(m_floorObject.m_floorSprite, 
+                                                          transform);
                 float posX = j * m_tileSizeX;
                 float posZ = i * m_tileSizeY;
 
                 tile.transform.position = new Vector3(posX, 0.0f, posZ);
 
-                m_savedTiles[tempRowsCols] = tile;
+                //We save the tiles in an arrangement
+                m_floorObject.m_savedTiles[tempRowsCols] = tile;
+                m_floorObject.m_floorPosition[tempRowsCols] = tile.transform.position;
+
                 ++tempRowsCols;
 
-                //Zona para dibujar obstáculos a la derecha
+                //Area to draw obstacles on the right
                 if (!oneTime)
                 {
                     generateObstacle(posZ);
@@ -57,19 +62,19 @@ public class uc_createWorld : MonoBehaviour
             }
         }
 
-        //Zona para los obstáculos de arriba
+        //Overhead obstacle area
         generateObstacle2();
 
-        //Zona para los obstáculos de la izquierda
+        //Left obstacle area
         generateObstacle3();
 
-        //Zona para los obstáculos de abajo
+        //Area for obstacles below
         generateObstacle4();
     }
 
     private void generateObstacle(float posZ)
     {
-        //Lado positivo
+        //Positive side
         GameObject limitMap = (GameObject)Instantiate(m_limitMapSprite, transform);
         float posX_LM = m_rows * m_tileSizeX;
 
@@ -123,7 +128,7 @@ public class uc_createWorld : MonoBehaviour
 
     public Vector2Int obtainWorldPosition(Vector3 worldPosition)
     {
-        //Pasar del mundo al tile
+        //Go from the world to the tile
         Vector2 mapCoord;
 
         mapCoord.x = (worldPosition.x / m_tileSizeX);
@@ -140,8 +145,8 @@ public class uc_createWorld : MonoBehaviour
       if((tilePos.x > 0 && tilePos.x < m_rows)
          && (tilePos.y > 0 && tilePos.y < m_columns)) {
 
-        return m_savedTiles[(tilePos.y * m_columns) 
-                            + tilePos.x].transform.position;
+        return m_floorObject.m_savedTiles[(tilePos.y * m_columns) 
+                                          + tilePos.x].transform.position;
       }
 
       return new Vector3(-1.0f, -1.0f, -1.0f);
@@ -149,9 +154,9 @@ public class uc_createWorld : MonoBehaviour
 
     private void obtainBounds()
     {
-        BoxCollider tempSprite = m_floorSprite.GetComponent<BoxCollider>();
+        BoxCollider tempSprite = m_floorObject.m_floorSprite.GetComponent<BoxCollider>();
 
-        //Sabemos cuando mide un tile
+        //We know how long a tile is
         m_tileSizeX = tempSprite.size.x;
         m_tileSizeY = tempSprite.size.y;
     }
