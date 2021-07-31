@@ -21,6 +21,8 @@ public class ucEnemyBase : MonoBehaviour
     protected uint m_maxChangeTile;
     [SerializeField]
     protected float m_detectionRange;
+    [SerializeField]
+    protected bool PlayerDetection;
 
     protected bool m_canCollide;
     protected bool m_chasePlayer;
@@ -36,8 +38,7 @@ public class ucEnemyBase : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-        GameObject map = GameObject.Find("World Origin");
-        m_map = map.GetComponent<uc_createWorld>();
+        m_map = GameObject.Find("World Origin").GetComponent<uc_createWorld>();
         m_player = GameObject.FindGameObjectWithTag("Player");
         m_direction = DIRECTIONS.kNULL;
         SetRandomDirection();
@@ -48,28 +49,38 @@ public class ucEnemyBase : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        DetectPlayer();
         m_mapPos = m_map.obtainWorldPosition(gameObject.transform.position);
-        if(m_prevMapPos != m_mapPos) {
-            m_prevMapPos = m_mapPos;
-            ++m_currChangeTile;
-            if (m_currChangeTile >= m_changeTile) {
-                SwapDirection();
-                ResetChangeTile();
-            }
+        if (PlayerDetection) {
+            DetectPlayer();
+        }        
+        if (m_chasePlayer) {
+            Vector3 tilePos = m_map.obtainTileToWorld(
+                                m_map.obtainWorldPosition(
+                                  m_player.transform.position));
+
+            m_directionVec = (new Vector3(tilePos.x, transform.position.y, tilePos.z)
+                             - transform.position).normalized;
         }
+        else {
+            if (m_prevMapPos != m_mapPos) {
+                m_prevMapPos = m_mapPos;
+                ++m_currChangeTile;
+                if (m_currChangeTile >= m_changeTile) {
+                    SwapDirection();
+                    ResetChangeTile();
+                }
+            }
+        } 
         transform.position += m_directionVec * m_speed * Time.deltaTime;
     }
 
     void DetectPlayer() {
         RaycastHit hit;
         Vector3 directionToPlayer = (m_player.transform.position - transform.position).normalized;
-        if(Physics.Raycast(transform.position, directionToPlayer, out hit, m_detectionRange)) {
-             if (hit.collider.gameObject.CompareTag("Player")) {
-                m_chasePlayer = true;
-            }
+        if (Physics.Raycast(transform.position, directionToPlayer, out hit, m_detectionRange)) {
+            m_chasePlayer = hit.collider.gameObject.CompareTag("Player") ? true : false;
         }
-        Debug.DrawRay(transform.position, directionToPlayer, Color.green);
+        Debug.DrawRay(transform.position, directionToPlayer * m_detectionRange, Color.green);
     }
 
     void SetRandomDirection() {
@@ -101,14 +112,14 @@ public class ucEnemyBase : MonoBehaviour
         Vector3 tempNormal = point.normal;
 
         if (tempNormal.x != 0) {
-            transform.position = new Vector3(transform.position.x + tempNormal.x * 0.05f,
+            transform.position = new Vector3(transform.position.x + tempNormal.x * 0.09f,
                                              transform.position.y,
                                              transform.position.z);
         }
         else {
             transform.position = new Vector3(transform.position.x,
                                              transform.position.y,
-                                             transform.position.z + tempNormal.z * 0.05f);
+                                             transform.position.z + tempNormal.z * 0.09f);
         }
     }
     
