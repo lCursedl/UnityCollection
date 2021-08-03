@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class uc_createWorld : MonoBehaviour
 {
@@ -10,11 +11,11 @@ public class uc_createWorld : MonoBehaviour
     private float m_tileSizeX = 0;
     private float m_tileSizeY = 0;
 
-    public uc_infoTile m_infoTileObj;
-    public uc_floorTiles m_floorObject;
+    private int[] m_numbersNotUse;
 
-    //TODO: Change
-    public GameObject m_limitMapSprite;
+    public GameObject m_limitMapObj;
+
+    public uc_floorTiles m_floorObject;
     
     //Start is called before the first frame update
     void Start()
@@ -40,14 +41,13 @@ public class uc_createWorld : MonoBehaviour
             for (uint j = 0; j < m_columns; ++j)
             {
                 //Area to draw the complete map
-                GameObject tile = (GameObject)Instantiate(m_floorObject.m_floorSprite, 
+                GameObject tile = (GameObject)Instantiate(m_floorObject.m_floorObj, 
                                                           transform);
                 float posX = j * m_tileSizeX;
                 float posZ = i * m_tileSizeY;
 
                 tile.transform.position = new Vector3(posX, 0.0f, posZ);
 
-                //We save the tiles in an arrangement
                 m_floorObject.m_savedTiles[tempRowsCols] = tile;
                 m_floorObject.m_floorPosition[tempRowsCols] = tile.transform.position;
 
@@ -70,27 +70,119 @@ public class uc_createWorld : MonoBehaviour
 
         //Area for obstacles below
         generateObstacle4();
+
+        //Starts indestructible item spawn
+        generateIndestructibleObjs();
+
+        //Starts destructible item spawn
+        generateDestructibleObjs();
+    }
+
+    private void generateDestructibleObjs()
+    {
+        uint allMap = m_rows * m_columns;
+        uint allDesObj = m_rows * m_columns;
+        allDesObj /= 8;
+
+        System.Random rand = new System.Random();
+        int rand_num;
+        int vamooo = 0;
+
+        for (uint i = 0; i < allDesObj; ++i)
+        {
+            rand_num = rand.Next(0, (int)allMap);
+            vamooo = 0;
+
+            for (uint j = 0; j < m_numbersNotUse.Length + 1; ++j)
+            {
+                if (vamooo < m_numbersNotUse.Length)
+                {
+                    if (rand_num != m_numbersNotUse[vamooo])
+                    {
+                        ++vamooo;
+                    }
+                    else
+                    {
+                        rand_num = rand.Next(0, (int)allMap);
+                        j = j - 1;
+                    }
+                }
+            }
+
+            GameObject tile = (GameObject)Instantiate(m_floorObject.m_destructibleBlocksObj,
+                                                      transform);
+
+            Vector3 newPos = m_floorObject.m_floorPosition[rand_num];
+
+            tile.transform.position = new Vector3(newPos.x, 0.8f, newPos.z);
+        }
+    }
+
+    private void generateIndestructibleObjs()
+    {
+        uint allIndesObj = m_rows * m_columns;
+        allIndesObj /= 8;
+
+        m_numbersNotUse = new int[allIndesObj];
+
+        uint allMap = m_rows * m_columns;
+
+        System.Random rand = new System.Random();
+
+        int rand_num;
+        int vamooo = 0;
+
+        for (uint i = 0; i < allIndesObj; ++i)
+        {
+            rand_num = rand.Next(0, (int)allMap);
+            vamooo = 0;
+
+            for (uint j = 0; j < m_numbersNotUse.Length + 1; ++j)
+            {
+                if (vamooo < m_numbersNotUse.Length)
+                {
+                    if (rand_num != m_numbersNotUse[vamooo])
+                    {
+                        ++vamooo;
+                    }
+                    else
+                    {
+                        rand_num = rand.Next(0, (int)allMap);
+                        j = j - 1;
+                    }
+                }
+            }
+
+            GameObject tile = (GameObject)Instantiate(m_floorObject.m_indestructibleBlocksObj,
+                                                      transform);
+
+            Vector3 newPos = m_floorObject.m_floorPosition[rand_num];
+
+            tile.transform.position = new Vector3(newPos.x, 0.8f, newPos.z);
+
+            m_numbersNotUse[i] = rand_num;
+        }
     }
 
     private void generateObstacle(float posZ)
     {
         //Positive side
-        GameObject limitMap = (GameObject)Instantiate(m_limitMapSprite, transform);
+        GameObject limitMap = (GameObject)Instantiate(m_limitMapObj, transform);
         float posX_LM = m_rows * m_tileSizeX;
 
-        limitMap.transform.position = new Vector3(posX_LM, 0.0f, posZ);
+        limitMap.transform.position = new Vector3(posX_LM, 0.8f, posZ);
     }
 
     private void generateObstacle2()
     {
         for (uint i = 0; i <= m_columns; ++i)
         {
-            GameObject limitMap = (GameObject)Instantiate(m_limitMapSprite, transform);
+            GameObject limitMap = (GameObject)Instantiate(m_limitMapObj, transform);
 
             float posX = i * m_tileSizeX;
             float posZ = m_rows * m_tileSizeY;
 
-            limitMap.transform.position = new Vector3(posX, 0.0f, posZ);
+            limitMap.transform.position = new Vector3(posX, 0.8f, posZ);
         }
     }
 
@@ -98,31 +190,31 @@ public class uc_createWorld : MonoBehaviour
     {
         for (uint i = 0; i <= m_rows; ++i)
         {
-            GameObject limitMap = (GameObject)Instantiate(m_limitMapSprite, transform);
+            GameObject limitMap = (GameObject)Instantiate(m_limitMapObj, transform);
             float posX_LM = -1 * m_tileSizeX;
             float posZ = i * m_tileSizeY;
 
-            limitMap.transform.position = new Vector3(posX_LM, 0.0f, posZ);
+            limitMap.transform.position = new Vector3(posX_LM, 0.8f, posZ);
         }
 
-        GameObject oneLimit = (GameObject)Instantiate(m_limitMapSprite, transform);
+        GameObject oneLimit = (GameObject)Instantiate(m_limitMapObj, transform);
 
         float posX = -1 * m_tileSizeX;
         float posZ_LM = -1 * m_tileSizeY;
 
-        oneLimit.transform.position = new Vector3(posX, 0.0f, posZ_LM);
+        oneLimit.transform.position = new Vector3(posX, 0.8f, posZ_LM);
     }
 
     private void generateObstacle4()
     {
         for (uint i = 0; i <= m_columns; ++i)
         {
-            GameObject limitMap = (GameObject)Instantiate(m_limitMapSprite, transform);
+            GameObject limitMap = (GameObject)Instantiate(m_limitMapObj, transform);
 
             float posX = i * m_tileSizeX;
             float posZ = -1 * m_tileSizeY;
 
-            limitMap.transform.position = new Vector3(posX, 0.0f, posZ);
+            limitMap.transform.position = new Vector3(posX, 0.8f, posZ);
         }
     }
 
@@ -154,7 +246,7 @@ public class uc_createWorld : MonoBehaviour
 
     private void obtainBounds()
     {
-        BoxCollider tempSprite = m_floorObject.m_floorSprite.GetComponent<BoxCollider>();
+        BoxCollider tempSprite = m_floorObject.m_floorObj.GetComponent<BoxCollider>();
 
         //We know how long a tile is
         m_tileSizeX = tempSprite.size.x;
