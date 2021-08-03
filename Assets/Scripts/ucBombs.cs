@@ -16,7 +16,7 @@ class ucBombs : MonoBehaviour {
   public bool m_isActive = false;
   List<GameObject> fire = new List<GameObject>();
   bool m_isExploded = false;
-
+  public uc_createWorld m_world;
 
   // Start is called before the first frame update
   void 
@@ -58,27 +58,33 @@ class ucBombs : MonoBehaviour {
     for (int i = 0; i <= 3; ++i) {
       //Range
       for (int j = 1; j <= m_range; ++j) {
-        Vector3 tmpPos = m_thisBomb.gameObject.transform.position;
+        Vector2Int tmpWorldPos = m_world.obtainWorldPosition(m_thisBomb.gameObject.transform.position);
+        Vector3 tmpPos = m_world.obtainTileToWorld(tmpWorldPos);
         switch (i) {
           case 0: //derecha
-            tmpPos.x += (m_thisBomb.GetComponent<BoxCollider>().size.x * j);
-
+            tmpPos.x += (m_thisBomb.transform.localScale.x * j);
             break;
           case 1: //abajo
-            tmpPos.z -= (m_thisBomb.GetComponent<BoxCollider>().size.z * j);
-
+            tmpPos.z -= (m_thisBomb.transform.localScale.z * j);
             break;
           case 2: //izquierda
-            tmpPos.x -= (m_thisBomb.GetComponent<BoxCollider>().size.x * j);
-
+            tmpPos.x -= (m_thisBomb.transform.localScale.x * j);
             break;
           case 3: //ariba
-            tmpPos.z += (m_thisBomb.GetComponent<BoxCollider>().size.z * j);
+            tmpPos.z += (m_thisBomb.transform.localScale.z * j);
             break;
         }
-
-        GameObject tmpFire = Instantiate(m_firePrefab, tmpPos, Quaternion.identity);
-        fire.Add(tmpFire);
+        if (tmpPos.x != -1 && tmpPos.x != -1 && tmpPos.z != -1) {
+          for (int k = 0; k < m_world.m_savedTiles.Length; ++i) {
+            if (m_world.m_savedTiles[k].tag == "Limit") {
+              if (m_world.m_savedTiles[k].transform.position.Equals(tmpPos)) {
+                Debug.Log("i did it");
+              }
+            }
+          }
+          GameObject tmpFire = Instantiate(m_firePrefab, tmpPos, Quaternion.identity);
+          fire.Add(tmpFire);
+        }
       }
     }
     m_isExploded = true;

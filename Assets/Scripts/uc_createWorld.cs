@@ -10,7 +10,7 @@ public class uc_createWorld : MonoBehaviour
     public GameObject m_floorSprite;
     public GameObject m_limitMapSprite;
 
-    private GameObject[] m_savedTiles;
+    public GameObject[] m_savedTiles;
     private float m_tileSizeX = 0;
     private float m_tileSizeY = 0;
 
@@ -74,6 +74,7 @@ public class uc_createWorld : MonoBehaviour
         float posX_LM = m_rows * m_tileSizeX;
 
         limitMap.transform.position = new Vector3(posX_LM, 0.0f, posZ);
+        limitMap.tag = "Limit";
     }
 
     private void generateObstacle2()
@@ -86,6 +87,7 @@ public class uc_createWorld : MonoBehaviour
             float posZ = m_rows * m_tileSizeY;
 
             limitMap.transform.position = new Vector3(posX, 0.0f, posZ);
+            limitMap.tag = "Limit";
         }
     }
 
@@ -98,6 +100,7 @@ public class uc_createWorld : MonoBehaviour
             float posZ = i * m_tileSizeY;
 
             limitMap.transform.position = new Vector3(posX_LM, 0.0f, posZ);
+            limitMap.tag = "Limit";
         }
 
         GameObject oneLimit = (GameObject)Instantiate(m_limitMapSprite, transform);
@@ -106,6 +109,7 @@ public class uc_createWorld : MonoBehaviour
         float posZ_LM = -1 * m_tileSizeY;
 
         oneLimit.transform.position = new Vector3(posX, 0.0f, posZ_LM);
+        oneLimit.tag = "Limit";
     }
 
     private void generateObstacle4()
@@ -118,6 +122,7 @@ public class uc_createWorld : MonoBehaviour
             float posZ = -1 * m_tileSizeY;
 
             limitMap.transform.position = new Vector3(posX, 0.0f, posZ);
+            limitMap.tag = "Limit";
         }
     }
 

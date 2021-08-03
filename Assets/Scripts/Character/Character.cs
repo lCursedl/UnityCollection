@@ -91,6 +91,7 @@ public class Character : MonoBehaviour {
 
         if(realPos.x != -1.0f) {
 
+          
           GameObject tmpBomb = Instantiate(bombsPrefab, 
                                           new Vector3(realPos.x, 
                                                       transform.position.y, 
@@ -99,6 +100,7 @@ public class Character : MonoBehaviour {
           bombs.Add(tmpBomb);
           ucBombs tmpBombInfo = tmpBomb.GetComponent(typeof(ucBombs)) as ucBombs;
           tmpBombInfo.Spawn();
+          tmpBombInfo.m_world = m_map;
         }
    
 
@@ -112,7 +114,7 @@ public class Character : MonoBehaviour {
     if (collision.gameObject.name == "Enemy") {
       m_lifes-=1;
     }
-    Debug.Log(m_lifes);
+    Debug.Log("Vidas restantes: "+m_lifes);
   }
 
 }
