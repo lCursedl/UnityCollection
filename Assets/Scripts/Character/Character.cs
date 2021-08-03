@@ -84,8 +84,7 @@ public class Character : MonoBehaviour {
     if (Input.GetKeyDown(KeyCode.Space)) {
       if (m_usingBombs < m_numBombs) {
         print("bomba puesta");
-        //Vector3 tmpPos = m_controller.gameObject.transform.position;
-        //Vector2Int tilePos = m_map.obtainWorldPosition(transform.position);
+
         Vector3 realPos = m_map.obtainTileToWorld
                                 (m_map.obtainWorldPosition(transform.position));
 
@@ -112,6 +111,10 @@ public class Character : MonoBehaviour {
     if (collision.gameObject.name == "Enemy") {
       m_lifes-=1;
     }
+    else if (collision.gameObject.name == "Fire(Clone)") {
+      m_lifes-=1;
+    }
+        
     Debug.Log(m_lifes);
   }
 
