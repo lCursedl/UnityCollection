@@ -40,10 +40,12 @@ public class Character : MonoBehaviour {
     // Start is called before the first frame update
     void 
   Start() {
-    GameObject map = GameObject.Find("World Origin");
+    GameObject map = GameObject.FindGameObjectWithTag("World");
     m_map = map.GetComponent<uc_createWorld>();
 
     m_controller = gameObject.AddComponent<CharacterController>();
+    m_controller.radius = 0.35f;
+    m_controller.height = 1.1f;
     m_lifes = 3;
     m_numBombs = 1;
   }

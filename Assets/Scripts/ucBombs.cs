@@ -11,7 +11,7 @@ class ucBombs : MonoBehaviour {
   float m_actualTimeFire; 
   int m_range = 2; //Range in tiles
   int m_tileSize;
-  public GameObject m_thisBomb;
+  //public GameObject m_thisBomb;
   public GameObject m_firePrefab;
   public bool m_isActive = false;
   List<GameObject> fire = new List<GameObject>();
@@ -27,7 +27,7 @@ class ucBombs : MonoBehaviour {
   // Update is called once per frame
   void 
   Update() {
-    m_isActive = m_thisBomb.activeSelf;
+    m_isActive = gameObject.activeSelf;
 
     if (m_isActive) {
       m_actualTime -= Time.deltaTime;
@@ -46,7 +46,7 @@ class ucBombs : MonoBehaviour {
 
   public void
   Spawn() {
-    m_thisBomb.SetActive(true);
+    gameObject.SetActive(true);
   }
 
 
@@ -58,22 +58,22 @@ class ucBombs : MonoBehaviour {
     for (int i = 0; i <= 3; ++i) {
       //Range
       for (int j = 1; j <= m_range; ++j) {
-        Vector3 tmpPos = m_thisBomb.gameObject.transform.position;
+        Vector3 tmpPos = gameObject.transform.position;
         switch (i) {
           case 0: //derecha
-            tmpPos.x += (m_thisBomb.GetComponent<BoxCollider>().size.x * j);
+            tmpPos.x += (GetComponent<BoxCollider>().size.x * j);
 
             break;
           case 1: //abajo
-            tmpPos.z -= (m_thisBomb.GetComponent<BoxCollider>().size.z * j);
+            tmpPos.z -= (GetComponent<BoxCollider>().size.z * j);
 
             break;
           case 2: //izquierda
-            tmpPos.x -= (m_thisBomb.GetComponent<BoxCollider>().size.x * j);
+            tmpPos.x -= (GetComponent<BoxCollider>().size.x * j);
 
             break;
           case 3: //ariba
-            tmpPos.z += (m_thisBomb.GetComponent<BoxCollider>().size.z * j);
+            tmpPos.z += (GetComponent<BoxCollider>().size.z * j);
             break;
         }
 
@@ -90,13 +90,13 @@ class ucBombs : MonoBehaviour {
 
 
     for (int i = 0; i < fire.Count; ++i ) {
-      DestroyObject(fire[i]);
+        Object.DestroyObject(fire[i]);
     }
 
 
-    m_thisBomb.SetActive(false);
+    gameObject.SetActive(false);
     fire = new List<GameObject>();
-    DestroyObject(m_thisBomb);
+    Object.DestroyObject(gameObject);
   }
 
 }

@@ -32,7 +32,7 @@ public class ucEnemyBase : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-        GameObject map = GameObject.Find("World Origin");
+        GameObject map = GameObject.FindGameObjectWithTag("World");
         m_map = map.GetComponent<uc_createWorld>();
         m_direction = DIRECTIONS.kNULL;
         SetRandomDirection();
