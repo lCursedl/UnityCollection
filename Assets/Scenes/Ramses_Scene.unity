@@ -249,6 +249,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1197379828}
   - component: {fileID: 1197379827}
+  - component: {fileID: 1197379829}
   m_Layer: 0
   m_Name: WorldPanel
   m_TagString: Untagged
@@ -268,10 +269,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 632306559b7aaec459b3093e6d564269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_rows: 10
-  m_columns: 10
-  m_floorSprite: {fileID: 1815769379880795833, guid: 8878388faffcef14496f04d63a0b3fba, type: 3}
-  m_limitMapSprite: {fileID: 5916567827315249657, guid: 0b71d55b17abf5940ae24a6bb498edad, type: 3}
+  m_rows: 16
+  m_columns: 16
+  m_limitMapObj: {fileID: 1476521507025719273, guid: f4b0442023c8c5d4cb80779b5bd07842, type: 3}
+  m_floorObject: {fileID: 1197379829}
 --- !u!4 &1197379828
 Transform:
   m_ObjectHideFlags: 0
@@ -286,6 +287,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1197379829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197379826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b5c8817771c6d44e95e971e3117376a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_floorObj: {fileID: 3483078167815895054, guid: 1f74293bdc5747b4d9c5e312b3a9b07f, type: 3}
+  m_destructibleBlocksObj: {fileID: 7180487451567127617, guid: b673e52df04100b4ebd6fafaaf45381a, type: 3}
+  m_indestructibleBlocksObj: {fileID: 6495744549519741411, guid: 7b4185bf0fc7ad74eac021db2d33e767, type: 3}
+  m_floorPosition: []
+  m_savedTiles: []
 --- !u!1 &1917697888
 GameObject:
   m_ObjectHideFlags: 0
