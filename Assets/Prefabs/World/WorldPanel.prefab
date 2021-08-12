@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4751607419638572608
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4751607419638572614}
+  - component: {fileID: 4751607419638572609}
+  - component: {fileID: 4751607419638572615}
+  m_Layer: 0
+  m_Name: WorldPanel
+  m_TagString: World
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4751607419638572614
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4751607419638572608}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4751607419638572609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4751607419638572608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 632306559b7aaec459b3093e6d564269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_rows: 16
+  m_columns: 16
+  m_limitMapObj: {fileID: 1476521507025719273, guid: f4b0442023c8c5d4cb80779b5bd07842, type: 3}
+--- !u!114 &4751607419638572615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4751607419638572608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b5c8817771c6d44e95e971e3117376a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_floorObj: {fileID: 3483078167815895054, guid: 1f74293bdc5747b4d9c5e312b3a9b07f, type: 3}
+  m_destructibleBlocksObj: {fileID: 7180487451567127617, guid: b673e52df04100b4ebd6fafaaf45381a, type: 3}
+  m_indestructibleBlocksObj: {fileID: 6495744549519741411, guid: 7b4185bf0fc7ad74eac021db2d33e767, type: 3}
+  m_floorPosition: []
+  m_savedTiles: []

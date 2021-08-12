@@ -40,10 +40,12 @@ public class Character : MonoBehaviour {
     // Start is called before the first frame update
     void 
   Start() {
-    GameObject map = GameObject.Find("World Origin");
+    GameObject map = GameObject.FindGameObjectWithTag("World");
     m_map = map.GetComponent<uc_createWorld>();
 
     m_controller = gameObject.AddComponent<CharacterController>();
+    m_controller.radius = 0.35f;
+    m_controller.height = 1.1f;
     m_lifes = 3;
     m_numBombs = 1;
   }
@@ -84,14 +86,12 @@ public class Character : MonoBehaviour {
     if (Input.GetKeyDown(KeyCode.Space)) {
       if (m_usingBombs < m_numBombs) {
         print("bomba puesta");
-        //Vector3 tmpPos = m_controller.gameObject.transform.position;
-        //Vector2Int tilePos = m_map.obtainWorldPosition(transform.position);
+
         Vector3 realPos = m_map.obtainTileToWorld
                                 (m_map.obtainWorldPosition(transform.position));
 
         if(realPos.x != -1.0f) {
 
-          
           GameObject tmpBomb = Instantiate(bombsPrefab, 
                                           new Vector3(realPos.x, 
                                                       transform.position.y, 
@@ -100,7 +100,6 @@ public class Character : MonoBehaviour {
           bombs.Add(tmpBomb);
           ucBombs tmpBombInfo = tmpBomb.GetComponent(typeof(ucBombs)) as ucBombs;
           tmpBombInfo.Spawn();
-          tmpBombInfo.m_world = m_map;
         }
    
 
@@ -114,7 +113,11 @@ public class Character : MonoBehaviour {
     if (collision.gameObject.name == "Enemy") {
       m_lifes-=1;
     }
-    Debug.Log("Vidas restantes: "+m_lifes);
+    else if (collision.gameObject.name == "Fire(Clone)") {
+      m_lifes-=1;
+    }
+        
+    Debug.Log(m_lifes);
   }
 
 }

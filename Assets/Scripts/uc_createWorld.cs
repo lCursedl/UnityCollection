@@ -15,18 +15,19 @@ public class uc_createWorld : MonoBehaviour
 
     public GameObject m_limitMapObj;
 
-    public uc_floorTiles m_floorObject;
+    private uc_floorTiles m_floorObject;
     
     //Start is called before the first frame update
     void Start()
     {
+        m_floorObject = GetComponent<uc_floorTiles>();
         //Obtaining bounds of the model to use
         obtainBounds();
         generateWorld();
     }
 
     private void generateWorld()
-    {
+    {       
         m_floorObject.m_savedTiles = new GameObject[m_rows * m_columns];
         m_floorObject.m_floorPosition = new Vector3[m_rows * m_columns];
 

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Limit
   - Fire
+  - World
   layers:
   - Default
   - TransparentFX
