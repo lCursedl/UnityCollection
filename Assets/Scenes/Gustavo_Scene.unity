@@ -158,8 +158,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_speed: 1
   m_scoreValue: 0
-  m_minChangeTime: 0
-  m_maxChangeTime: 0
+  m_minChangeTile: 3
+  m_maxChangeTile: 6
 --- !u!65 &89738822
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -270,7 +270,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &101486543
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -376,9 +376,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 632306559b7aaec459b3093e6d564269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_rows: 2
-  m_columns: 2
-  m_referenceSprite: {fileID: 1815769379880795833, guid: 8878388faffcef14496f04d63a0b3fba, type: 3}
+  m_rows: 10
+  m_columns: 10
+  m_floorSprite: {fileID: 1815769379880795833, guid: 8878388faffcef14496f04d63a0b3fba, type: 3}
+  m_limitMapSprite: {fileID: 5916567827315249657, guid: 0b71d55b17abf5940ae24a6bb498edad, type: 3}
 --- !u!4 &829797249
 Transform:
   m_ObjectHideFlags: 0
@@ -527,7 +528,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1595498162
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -715,7 +716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &2080442896
 BoxCollider:
   m_ObjectHideFlags: 0
