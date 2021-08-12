@@ -75,9 +75,9 @@ class ucBombs : MonoBehaviour {
             break;
         }
         if (tmpPos.x != -1 && tmpPos.x != -1 && tmpPos.z != -1) {
-          for (int k = 0; k < m_world.m_savedTiles.Length; ++i) {
-            if (m_world.m_savedTiles[k].tag == "Limit") {
-              if (m_world.m_savedTiles[k].transform.position.Equals(tmpPos)) {
+          for (int k = 0; k < m_world.m_floorObject.m_savedTiles.Length; ++i) {
+            if (m_world.m_floorObject.m_savedTiles[k].tag == "Limit") {
+              if (m_world.m_floorObject.m_savedTiles[k].transform.position.Equals(tmpPos)) {
                 Debug.Log("i did it");
               }
             }
