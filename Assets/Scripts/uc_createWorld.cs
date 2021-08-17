@@ -15,8 +15,11 @@ public class uc_createWorld : MonoBehaviour
 
     public GameObject m_limitMapObj;
 
-    private uc_floorTiles m_floorObject;
-    
+    public uc_floorTiles m_floorObject;
+
+    public List<GameObject> m_savedDestructibles = new List<GameObject>();
+    public List<GameObject> m_savedIndestructibles = new List<GameObject>();
+   
     //Start is called before the first frame update
     void Start()
     {
@@ -116,6 +119,8 @@ public class uc_createWorld : MonoBehaviour
             Vector3 newPos = m_floorObject.m_floorPosition[rand_num];
 
             tile.transform.position = new Vector3(newPos.x, 0.8f, newPos.z);
+            tile.tag = "Destructible";
+            m_savedDestructibles.Add(tile);
         }
     }
 
@@ -162,6 +167,8 @@ public class uc_createWorld : MonoBehaviour
             tile.transform.position = new Vector3(newPos.x, 0.8f, newPos.z);
 
             m_numbersNotUse[i] = rand_num;
+            tile.tag = "Indestructible";
+            m_savedIndestructibles.Add(tile);
         }
     }
 
@@ -232,16 +239,16 @@ public class uc_createWorld : MonoBehaviour
         mapCoord.x = (worldPosition.x / m_tileSizeX);
         mapCoord.y = (worldPosition.z / m_tileSizeY);
 
-        mapCoord.x = Mathf.Clamp(mapCoord.x, 0, m_rows - 1);
-        mapCoord.y = Mathf.Clamp(mapCoord.y, 0, m_columns - 1);
+        //mapCoord.x = Mathf.Clamp(mapCoord.x, 0, m_rows - 1);
+        //mapCoord.y = Mathf.Clamp(mapCoord.y, 0, m_columns - 1);
 
         return Vector2Int.RoundToInt(mapCoord);
     }
 
     public Vector3 obtainTileToWorld(Vector2Int tilePos) {
 
-      if((tilePos.x > 0 && tilePos.x < m_rows)
-         && (tilePos.y > 0 && tilePos.y < m_columns)) {
+      if((tilePos.x >= 0 && tilePos.x <= m_rows)
+         && (tilePos.y >= 0 && tilePos.y <= m_columns)) {
 
         return m_floorObject.m_savedTiles[(tilePos.y * m_columns) 
                                           + tilePos.x].transform.position;

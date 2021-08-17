@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2777019484686354190}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.8, y: 1, z: 3.79}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a52087dfc7d2a842ae42dc7e0171d52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_thisBomb: {fileID: 2777019484686354190}
   m_firePrefab: {fileID: 4599537170859380782, guid: b1e94638c4d1e764fb0b72a983583bd2, type: 3}
   m_isActive: 0
 --- !u!65 &7951122684885321719

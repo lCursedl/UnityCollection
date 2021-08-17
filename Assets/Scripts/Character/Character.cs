@@ -94,7 +94,7 @@ public class Character : MonoBehaviour {
 
           GameObject tmpBomb = Instantiate(bombsPrefab, 
                                           new Vector3(realPos.x, 
-                                                      transform.position.y, 
+                                                      transform.position.y - 0.18f, 
                                                       realPos.z), 
                                           Quaternion.identity);
           bombs.Add(tmpBomb);
