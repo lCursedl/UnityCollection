@@ -67,6 +67,12 @@ public class ucEnemyBase : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("Fire")) {
+            ucScore.m_scoreValue += m_scoreValue;
+            Destroy(gameObject);
+        }
+    }
     private void OnCollisionEnter(Collision collision) {
         SetRandomDirection();
         ContactPoint point = collision.GetContact(0);
