@@ -91,10 +91,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3652986574784643574}
   - component: {fileID: 3652986574784643575}
-  - component: {fileID: 2201571976976363376}
   m_Layer: 0
   m_Name: Player 1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -129,25 +128,11 @@ MonoBehaviour:
   m_speed: 2
   bombs: []
   bombsPrefab: {fileID: 2777019484686354190, guid: 48098a3d700767b4ea6dc0928566c039, type: 3}
+  m_bomb: {fileID: 0}
+  m_step: {fileID: 0}
   m_meshRender: {fileID: 0}
   m_rowProperty: _ActualRow
   m_colProperty: _ActualCol
   m_axis: 1
   m_animationSpeed: 1
   m_animationIndex: 0
---- !u!54 &2201571976976363376
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3652986574784643570}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 116
-  m_CollisionDetection: 0

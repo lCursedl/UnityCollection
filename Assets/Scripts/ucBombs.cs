@@ -172,13 +172,13 @@ class ucBombs : MonoBehaviour {
 
 
     for (int i = 0; i < fire.Count; ++i ) {
-        Object.DestroyObject(fire[i]);
+        Destroy(fire[i]);
     }
 
 
     gameObject.SetActive(false);
     fire = new List<GameObject>();
-    Object.DestroyObject(gameObject);
+    Destroy(gameObject);
   }
 
 }
