@@ -13,8 +13,13 @@ public class Character : MonoBehaviour {
   public List<GameObject> bombs = new List<GameObject>();
   public GameObject bombsPrefab;
   uc_createWorld m_map;
-    
-  public enum ANIMATIONAXIS {
+
+
+   public AudioSource m_bomb;
+   public AudioSource m_step;
+
+
+    public enum ANIMATIONAXIS {
     kRows,
     kColum
   }
@@ -40,6 +45,9 @@ public class Character : MonoBehaviour {
     // Start is called before the first frame update
     void 
   Start() {
+
+     
+
     GameObject map = GameObject.FindGameObjectWithTag("World");
     m_map = map.GetComponent<uc_createWorld>();
 
@@ -58,12 +66,22 @@ public class Character : MonoBehaviour {
                                0,
                                Input.GetAxis("Vertical"));
 
-    m_controller.Move(move * Time.deltaTime * m_speed);
+    if((move.x != 0 || move.z != 0) && m_step.loop == false) {
+      m_step.Play();
+      m_step.loop = true;
+
+    }
+    else if(move.x == 0 && move.z == 0 && m_step.loop == true) {
+      m_step.Stop();
+      m_step.loop = false;
+    }
+        m_controller.Move(move * Time.deltaTime * m_speed);
 
     string clipKey, frameKey;
     if(m_axis == ANIMATIONAXIS.kRows) {
       clipKey = m_rowProperty;
       frameKey = m_colProperty;
+
     }
     else {
       clipKey = m_colProperty;
@@ -80,15 +98,21 @@ public class Character : MonoBehaviour {
     
   }
 
-  void
+    IEnumerator stepsSound(){
+
+      yield return new WaitForSeconds(1);
+
+    }
+
+    void
   inputEvent() {
 
     if (Input.GetKeyDown(KeyCode.Space)) {
       if (m_usingBombs < m_numBombs) {
         print("bomba puesta");
-
+        m_bomb.Play();
         Vector3 realPos = m_map.obtainTileToWorld
-                                (m_map.obtainWorldPosition(transform.position));
+                               (m_map.obtainWorldPosition(transform.position));
 
         if(realPos.x != -1.0f) {
 
@@ -106,6 +130,7 @@ public class Character : MonoBehaviour {
         
       }
     }
+  
   }
 
   private void OnCollisionEnter(Collision collision) {
